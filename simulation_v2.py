@@ -34,7 +34,7 @@ def init_sim(sta_count, init_cw_min, init_cw_max, throughput, time_range):
                     sta_index_that_send_packet = i
                 else:
                     is_another_packet_in_air = True
-                    if sta[i].cw_min < sta[i].cw_max / 2:
+                    if sta[i].cw_min <= sta[i].cw_max / 2:
                         sta[i].cw_min = (sta[i].cw_min + 1) * 2 - 1  # 1 fazlasinin, 2 katinin, 1 eksigi
                     sta[i].cw = random.randint(0, sta[i].cw_min)
             elif sta[i].cw < 0:

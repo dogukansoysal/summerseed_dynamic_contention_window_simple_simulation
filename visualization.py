@@ -5,10 +5,10 @@ import pandas as pd
 from simulation_v2 import *
 
 time_range = 100
-sta_count = 50
-iteration_count = 5
+sta_count = 100
+iteration_count = 20
 cw_min = 0
-cw_max = 257
+cw_max = 1024
 throughput = [100, 0, 0, 0]
 
 
@@ -20,11 +20,25 @@ class Result:
         self.sta_count = sta_count
 
 
+def expo(init_value, max_value):
+    values = []
+    values.append(init_value)
+
+    if init_value == 0:     # exponentiation of zero as one
+        init_value += 1
+
+    while init_value <= max_value / 2:
+        init_value *= 2
+        values.append(init_value)
+    return values
+
+
 def main():
+
     while True:
         raw_data = []
-        for cw_max_counter in range(256, cw_max):
-            for cw_min_counter in range(cw_min, 255):
+        for cw_max_counter in expo(256, cw_max):
+            for cw_min_counter in expo(cw_min, 256):
                 # total_throughput = 0
                 for i in range(1, sta_count + 1):
                     temp = 0
@@ -40,7 +54,7 @@ def main():
         for i in range(sta_count):
             temp = i
             temp_result = Result(0, 0, 0, 0)
-            while temp < (cw_max - 256) * (255 - cw_min) * sta_count:
+            while temp < len(expo(256, cw_max)) * len(expo(cw_min, 256)) * sta_count:
                 if raw_data[temp].throughput > temp_result.throughput:
                     temp_result = raw_data[temp]
                 temp += sta_count
