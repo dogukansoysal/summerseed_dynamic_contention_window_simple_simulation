@@ -21,7 +21,7 @@ def init_sim(sta_count, init_cw_min, init_cw_max, throughput, time_range):
     for i in range(sta_count):
         sta.append(Sta(random.randint(1, 1), random.randint(0, init_cw_min), init_cw_min, init_cw_max))
 
-    init_cw_min = algo_1(sta_count, sta)
+    # init_cw_min = algo_1(sta_count, sta)
 
     while time_range > 0:
         is_air_busy = False
@@ -72,6 +72,16 @@ def algo_1(sta_count, sta):
 
     if target_cwmin < 15:
         target_cwmin = 15
+
+    for i in range(sta_count):
+        sta[i].cwmin = target_cwmin
+        sta[i].cwmax = target_cwmax
+
+    return target_cwmin
+
+def algo_2(sta_count, sta):
+    target_cwmin = sta_count / 2
+    target_cwmax = 1023
 
     for i in range(sta_count):
         sta[i].cwmin = target_cwmin
